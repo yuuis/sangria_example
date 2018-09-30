@@ -1,9 +1,5 @@
 import sangria.relay.{ Connection, ConnectionArgs }
 
-case class Article(id: String, title: String, author: Option[String], tags: List[String])
-
-case class Comment(id: String, articleId: String, body: String)
-
 class ArticleRepository {
   import ArticleRepository._
   def findArticleById(id: String): Option[Article] = ArticleRepository.articles.find(_.id == id)
@@ -13,9 +9,6 @@ class ArticleRepository {
   // when data can be got, return data with paging info
   def articleConnection(connectionArgs: ConnectionArgs): Connection[Article] =
     Connection.connectionFromSeq(articles, connectionArgs)
-
-  def commentConnection(articleId: String, connectionArgs: ConnectionArgs): Connection[Comment] =
-    Connection.connectionFromSeq(comments.filter(_.articleId == articleId), connectionArgs)
 }
 
 object ArticleRepository {
@@ -34,11 +27,4 @@ object ArticleRepository {
     Article("12", "about Typescript", None, List()),
     Article("13", "about Typescript2", None, List()),
     Article("14", "rejected", None, List()))
-
-  val comments = List(
-    Comment("1", "1", "someone talk about OCaml"),
-    Comment("2", "1", "From that I want to talk about Haskell"),
-    Comment("3", "2", "someone talk about OCaml"),
-    Comment("4", "2", "From that I want to talk about Haskell")
-  )
 }

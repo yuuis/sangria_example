@@ -31,9 +31,8 @@ object Server extends App {
   import system.dispatcher
 
   def executeGraphQL(query: Document, operationName: Option[String], variables: Json) =
-    complete(Executor.execute(SchemaDefinition.ArticleSchema, query, new ArticleRepository,
-      variables = if (variables.isNull) Json.obj() else variables,
-      operationName = operationName)
+    complete(
+      Executor.execute(SchemaDefinition.ArticleSchema, query, ContainerImpl, variables = if (variables.isNull) Json.obj() else variables, operationName = operationName)
       .map(OK -> _)
       .recover {
         case error: QueryAnalysisError => BadRequest -> error.resolveError

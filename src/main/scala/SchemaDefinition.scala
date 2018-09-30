@@ -7,7 +7,7 @@ object SchemaDefinition {
   val CommentType =
     ObjectType(
       "Comment",
-      fields[ArticleRepository, Comment] (
+      fields[Container, Comment] (
         Field("id", StringType, Some("id of comment"), resolve = _.value.id),
         Field("articleId", StringType, Some("article id of commented"), resolve = _.value.articleId),
         Field("body", StringType, Some("body of comment"), resolve = _.value.body)
@@ -16,19 +16,19 @@ object SchemaDefinition {
 
   // definition of CommentConnection type on GraphQL
   val ConnectionDefinition(_, commentConnection) =
-    Connection.definition[ArticleRepository, Connection, Comment]("Comments", CommentType)
+    Connection.definition[CommentRepository, Connection, Comment]("Comments", CommentType)
 
   // definition of Article type on GraphQL
   // and mapping of ariticle type on scala code (_.value is Article type)
   val ArticleType =
     ObjectType(
       "Article",
-      fields[ArticleRepository, Article](
+      fields[Container, Article](
         Field("id", StringType, Some("id of article"), resolve = _.value.id),
         Field("title", StringType, Some("title of article"), resolve = _.value.title),
         Field("author", OptionType(StringType), Some("author of article"), resolve = _.value.author),
         Field("comments", OptionType(commentConnection), Some("comments of article"), 
-          arguments = Connection.Args.All, resolve = ctx => ctx.ctx.commentConnection(ctx.value.id, ConnectionArgs(ctx))),
+          arguments = Connection.Args.All, resolve = ctx => ctx.ctx.commentRepository.commentConnection(ctx.value.id, ConnectionArgs(ctx))),
         Field("tags", ListType(StringType), Some("tags of article"), resolve = _.value.tags)
       ))
 
@@ -43,11 +43,11 @@ object SchemaDefinition {
   // and how to get articles from ArticleRepository (ctx.ctx is ArticleRepository type)
   val QueryType = ObjectType(
     "Query",
-    fields[ArticleRepository, Unit] (
+    fields[Container, Unit] (
       Field("article", OptionType(ArticleType), arguments = idArgument :: Nil,
-        resolve = ctx => ctx.ctx.findArticleById(ctx.arg(idArgument))),
+        resolve = ctx => ctx.ctx.articleRepository.findArticleById(ctx.arg(idArgument))),
       Field("articles", OptionType(articleConnection), arguments = Connection.Args.All,
-        resolve = ctx => ctx.ctx.articleConnection(ConnectionArgs(ctx)))
+        resolve = ctx => ctx.ctx.articleRepository.articleConnection(ConnectionArgs(ctx)))
     )
   )
 
