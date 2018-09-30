@@ -16,8 +16,8 @@ class ArticleRepository {
 
 object ArticleRepository {
   val articles = List(
-    Article("1", "about AWS", Some("yamasaki"), List("aws", "infla")),
-    Article("2", "about scala", None, List("null", "unforgivable")),
+    Article("1", "about AWS", Some("1"), List("aws", "infla")),
+    Article("2", "about scala", Some("2"), List("null", "unforgivable")),
     Article("3", "about scala_2", None, List("null", "unforgivable")),
     Article("4", "about scala_3", None, List("null", "unforgivable")),
     Article("5", "about TaPL", None, List()),

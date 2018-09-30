@@ -1,13 +1,12 @@
 package schema
 
-import model.{Article, Comment}
-import repository.{ArticleRepository, CommentRepository}
+import model.{Article, Comment, User}
+import repository.{ArticleRepository, CommentRepository, UserRepository}
 import sangria.relay.{Connection, ConnectionArgs, ConnectionDefinition}
 import sangria.schema.{Argument, Field, ListType, ObjectType, OptionType, Schema, StringType, fields}
 
 object SchemaDefinition {
 
-  // definition of Comment type on GraphQL
   val CommentType =
     ObjectType(
       "Comment",
@@ -18,27 +17,39 @@ object SchemaDefinition {
       )
     )
 
-  // definition of CommentConnection type on GraphQL
   val ConnectionDefinition(_, commentConnection) =
     Connection.definition[CommentRepository, Connection, Comment]("Comments", CommentType)
 
-  // definition of Article type on GraphQL
-  // and mapping of ariticle type on scala code (_.value is Article type)
-  val ArticleType =
+  val UserType =
     ObjectType(
-      "Article",
-      fields[Container, Article](
-        Field("id", StringType, Some("id of article"), resolve = _.value.id),
-        Field("title", StringType, Some("title of article"), resolve = _.value.title),
-        Field("author", OptionType(StringType), Some("author of article"), resolve = _.value.author),
-        Field("comments", OptionType(commentConnection), Some("comments of article"),
-          arguments = Connection.Args.All, resolve = ctx => ctx.ctx.commentRepository.commentConnection(ctx.value.id, ConnectionArgs(ctx))),
-        Field("tags", ListType(StringType), Some("tags of article"), resolve = _.value.tags)
-      ))
+      "User",
+      fields[Container, User] (
+        Field("id", StringType, Some("id of user"), resolve = _.value.id),
+        Field("name", StringType, Some("name of user"), resolve = _.value.name)
+      )
+    )
 
-  // definition of ArticleConnection type on GraphQL
+  val ConnectionDefinition(_, userConnection) =
+    Connection.definition[UserRepository, Connection, User]("User", UserType)
+
+  // mapping of ariticle type on scala code (_.value is Article type)
+  val ArticleType =
+  ObjectType(
+  "Article",
+  fields[Container, Article](
+  Field("id", StringType, Some("id of article"), resolve = _.value.id),
+  Field("title", StringType, Some("title of article"), resolve = _.value.title),
+  Field("author", OptionType(userConnection), Some("author of article"),
+  arguments = Connection.Args.All, resolve = ctx => ctx.ctx.userRepository.userConnection(ctx.value.id, ConnectionArgs(ctx))),
+  Field("comments", OptionType(commentConnection), Some("comments of article"),
+  arguments = Connection.Args.All, resolve = ctx => ctx.ctx.commentRepository.commentConnection(ctx.value.id, ConnectionArgs(ctx))),
+  Field("tags", ListType(StringType), Some("tags of article"), resolve = _.value.tags)
+  ))
+
   val ConnectionDefinition(_, articleConnection) =
-    Connection.definition[ArticleRepository, Connection, Article]("Article", ArticleType)
+  Connection.definition[ArticleRepository, Connection, Article]("Article", ArticleType)
+
+
 
   // argument used for query name id of type String
   val idArgument = Argument("id", StringType, description = "id")

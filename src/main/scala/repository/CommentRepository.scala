@@ -5,6 +5,9 @@ import sangria.relay.{Connection, ConnectionArgs}
 
 class CommentRepository {
   import CommentRepository._
+
+//  def findUserById(id: String): Option[Comment] = CommentRepository.comments.find(_.id == id)
+
   def commentConnection(articleId: String, connectionArgs: ConnectionArgs): Connection[Comment] =
     Connection.connectionFromSeq(comments.filter(_.articleId == articleId), connectionArgs)
 }
