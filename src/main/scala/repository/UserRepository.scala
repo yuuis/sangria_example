@@ -8,8 +8,10 @@ class UserRepository {
 
   def findUserById(id: String): Option[User] = UserRepository.users.find(_.id == id)
 
-  def userConnection(authorId: String, connectionArgs: ConnectionArgs): Connection[User] =
-    Connection.connectionFromSeq(users.filter(_.id == authorId), connectionArgs)
+  def userConnection(authorId: Option[String], connectionArgs: ConnectionArgs): Connection[User] =
+    authorId.fold(Connection.connectionFromSeq(users.filter(_.id == -1), connectionArgs)) { aId =>
+      Connection.connectionFromSeq(users.filter(_.id == aId), connectionArgs)
+    }
 }
 
 object UserRepository {

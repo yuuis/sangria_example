@@ -28,7 +28,7 @@ object SchemaDefinition {
         Field("id", StringType, Some("id of comment"), resolve = _.value.id),
         Field("articleId", StringType, Some("article id of commented"), resolve = _.value.articleId),
         Field("author", OptionType(userConnection), Some("author of comment"),
-          arguments = Connection.Args.All, resolve = ctx => ctx.ctx.userRepository.userConnection(ctx.value.author.get, ConnectionArgs(ctx))),
+          arguments = Connection.Args.All, resolve = ctx => ctx.ctx.userRepository.userConnection(ctx.value.author, ConnectionArgs(ctx))),
         Field("body", StringType, Some("body of comment"), resolve = _.value.body)
       )
     )
@@ -44,7 +44,7 @@ object SchemaDefinition {
         Field("id", StringType, Some("id of article"), resolve = _.value.id),
         Field("title", StringType, Some("title of article"), resolve = _.value.title),
         Field("author", OptionType(userConnection), Some("author of article"),
-          arguments = Connection.Args.All, resolve = ctx => ctx.ctx.userRepository.userConnection(ctx.value.author.get, ConnectionArgs(ctx))),
+          arguments = Connection.Args.All, resolve = ctx => ctx.ctx.userRepository.userConnection(ctx.value.author, ConnectionArgs(ctx))),
         Field("comments", OptionType(commentConnection), Some("comments of article"),
           arguments = Connection.Args.All, resolve = ctx => ctx.ctx.commentRepository.commentConnection(ctx.value.id, ConnectionArgs(ctx))),
         Field("tags", ListType(StringType), Some("tags of article"), resolve = _.value.tags)

@@ -29,5 +29,6 @@ object ArticleRepository {
     Article("11", "rejected", None, List()),
     Article("12", "about Typescript", Some("7"), List("js", "ts", "front-end")),
     Article("13", "about Typescript2", Some("7"), List("js", "ts", "front-end")),
-    Article("14", "rejected", None, List()))
+    Article("14", "rejected", None, List())
+  )
 }
