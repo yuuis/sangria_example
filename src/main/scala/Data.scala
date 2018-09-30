@@ -8,9 +8,9 @@ class ArticleRepository {
   import ArticleRepository._
   def findArticleById(id: String): Option[Article] = ArticleRepository.articles.find(_.id == id)
 
-  //メモリ内のコレクションを使用した実装
-  //実際にはafter,before,first,lastを使用してDB等にどのようなクエリでアクセスするかを決定しデータを取得
-  //データが取得できたらページング情報とともにデータを返すようにする
+  // implementation using collection in mmemory
+  // Actually, after, before, first, and last are used to decide what kind of query to access to the DB etc. to get the data
+  // when data can be got, return data with paging info
   def articleConnection(connectionArgs: ConnectionArgs): Connection[Article] =
     Connection.connectionFromSeq(articles, connectionArgs)
 
@@ -20,25 +20,25 @@ class ArticleRepository {
 
 object ArticleRepository {
   val articles = List(
-    Article("1", "AWSの話", Some("yamasaki"), List("aws", "インフラ")),
-    Article("2", "Scalaの話", None, List("null", "許さない")),
-    Article("3", "Scalaの話2", None, List("null", "許さない")),
-    Article("4", "Scalaの話3", None, List("null", "許さない")),
-    Article("5", "TaPLの話", None, List()),
-    Article("6", "動的型付言語に目覚めた話", None, List()),
-    Article("7", "静的型付言語に戻ってきた話", None, List()),
-    Article("8", "Haskellの話", None, List()),
-    Article("9", "Haskellの話2", None, List()),
-    Article("10", "F#の話", None, List()),
-    Article("11", "ボツ記事2", None, List()),
-    Article("12", "Typescriptの話", None, List()),
-    Article("13", "Typescriptの話2", None, List()),
-    Article("14", "ボツ記事1", None, List()))
+    Article("1", "about AWS", Some("yamasaki"), List("aws", "infla")),
+    Article("2", "about scala", None, List("null", "unforgivable")),
+    Article("3", "about scala_2", None, List("null", "unforgivable")),
+    Article("4", "about scala_3", None, List("null", "unforgivable")),
+    Article("5", "about TaPL", None, List()),
+    Article("6", "I found dynamic typing lanuguage is awesome", None, List()),
+    Article("7", "I came back static typing language", None, List()),
+    Article("8", "about Haskell", None, List()),
+    Article("9", "about Haskell_2", None, List()),
+    Article("10", "about F#", None, List()),
+    Article("11", "rejected", None, List()),
+    Article("12", "about Typescript", None, List()),
+    Article("13", "about Typescript2", None, List()),
+    Article("14", "rejected", None, List()))
 
   val comments = List(
-    Comment("1", "1", "だれかOCamlの話をしてくれ"),
-    Comment("2", "1", "そんなことよりHaskellの話がしたい"),
-    Comment("3", "2", "だれかOcamlの話をしてくれ"),
-    Comment("4", "2", "そんなことよりHaskellの話がしたい")
+    Comment("1", "1", "someone talk about OCaml"),
+    Comment("2", "1", "From that I want to talk about Haskell"),
+    Comment("3", "2", "someone talk about OCaml"),
+    Comment("4", "2", "From that I want to talk about Haskell")
   )
 }
