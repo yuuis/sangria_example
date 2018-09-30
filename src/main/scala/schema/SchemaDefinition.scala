@@ -1,6 +1,9 @@
-import sangria.relay._
-import sangria.schema._
-import model._
+package schema
+
+import model.{Article, Comment}
+import repository.{ArticleRepository, CommentRepository}
+import sangria.relay.{Connection, ConnectionArgs, ConnectionDefinition}
+import sangria.schema.{Argument, Field, ListType, ObjectType, OptionType, Schema, StringType, fields}
 
 object SchemaDefinition {
 
@@ -28,7 +31,7 @@ object SchemaDefinition {
         Field("id", StringType, Some("id of article"), resolve = _.value.id),
         Field("title", StringType, Some("title of article"), resolve = _.value.title),
         Field("author", OptionType(StringType), Some("author of article"), resolve = _.value.author),
-        Field("comments", OptionType(commentConnection), Some("comments of article"), 
+        Field("comments", OptionType(commentConnection), Some("comments of article"),
           arguments = Connection.Args.All, resolve = ctx => ctx.ctx.commentRepository.commentConnection(ctx.value.id, ConnectionArgs(ctx))),
         Field("tags", ListType(StringType), Some("tags of article"), resolve = _.value.tags)
       ))
@@ -41,7 +44,7 @@ object SchemaDefinition {
   val idArgument = Argument("id", StringType, description = "id")
 
   // Query. define query operation here
-  // and how to get articles from ArticleRepository (ctx.ctx is ArticleRepository type)
+  // and how to get articles from repository.ArticleRepository (ctx.ctx is repository.ArticleRepository type)
   val QueryType = ObjectType(
     "Query",
     fields[Container, Unit] (
@@ -52,6 +55,6 @@ object SchemaDefinition {
     )
   )
 
-  // definition of Schema 
+  // definition of Schema
   val ArticleSchema = Schema(QueryType)
 }

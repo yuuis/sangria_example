@@ -1,3 +1,7 @@
+package schema
+
+import repository.{ArticleRepository, CommentRepository}
+
 trait Container {
   def articleRepository: ArticleRepository
   def commentRepository: CommentRepository
