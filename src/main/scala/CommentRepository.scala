@@ -1,4 +1,5 @@
 import sangria.relay.{ Connection, ConnectionArgs }
+import models.Comment
 
 class CommentRepository {
   import CommentRepository._
