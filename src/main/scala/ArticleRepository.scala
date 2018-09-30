@@ -1,5 +1,5 @@
 import sangria.relay.{ Connection, ConnectionArgs }
-import models.Article
+import model.Article
 
 class ArticleRepository {
   import ArticleRepository._

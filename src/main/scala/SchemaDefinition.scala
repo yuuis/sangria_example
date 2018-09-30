@@ -1,6 +1,6 @@
 import sangria.relay._
 import sangria.schema._
-import models._
+import model._
 
 object SchemaDefinition {
 
