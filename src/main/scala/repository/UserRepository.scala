@@ -5,7 +5,8 @@ import sangria.relay.{Connection, ConnectionArgs}
 
 class UserRepository {
   import UserRepository._
-//  def findUserById(id: String): Option[User] = UserRepository.users.find(_.id == id)
+
+  def findUserById(id: String): Option[User] = UserRepository.users.find(_.id == id)
 
   def userConnection(authorId: String, connectionArgs: ConnectionArgs): Connection[User] =
     Connection.connectionFromSeq(users.filter(_.id == authorId), connectionArgs)
